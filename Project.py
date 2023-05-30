@@ -6,30 +6,27 @@ books = {
 }
 
 allow_duplicates = False
+borrowed_books=[]
 
-def view():         
+def view():
     if books:
-    
-        if books:
-            print("Daftar Buku:")
+        print("Daftar Buku:")
         for book_id, book_name in books.items():
-            print(f"Book ID: {book_id} - Book Name: {book_name}")
-        
+            if book_id not in borrowed_books:
+                print(f"Book ID: {book_id} - Book Name: {book_name}")
         search_name = input("Enter the book name to search: ")
         search_results = [book_name for book_name in books.values() if book_name == search_name]
-        
+
         if search_results:
             print(f"The book '{search_name}' is found in the library.")
         else:
             print(f"The book '{search_name}' is not found in the library.")
-    
+
     else:
         print("No books available.")
-    
-    
-    
-      
+
     back2menu()
+
 
 
 def addBook() :
@@ -117,7 +114,29 @@ def good2time():
     print("U got rickrolled!")
     back2menu()
        
-    
+def borrowBook():
+    book_id = int(input("Enter the ID of the book to borrow: "))
+    if book_id in books and book_id not in borrowed_books:
+        borrowed_books.append(book_id)
+        print("Book borrowed successfully.")
+    else:
+        print("Invalid book ID or book is already borrowed.")
+        print("\n Please Enter the Right ID:")
+        borrowBook()
+
+    back2menu()
+
+
+def returnBook():
+    book_id = int(input("Enter the ID of the book to return: "))
+    if book_id in borrowed_books:
+        borrowed_books.remove(book_id)
+        print("Book returned successfully.")
+    else:
+        print("Invalid book ID or book is not currently borrowed.")
+        print("\n Please Enter the Right ID:")
+        returnBook()
+    back2menu()
     
 def menu():
     print("\nWelcome to Perpustakaan Joestar!")
@@ -125,8 +144,10 @@ def menu():
     print("2. Add Book")
     print("3. Update Books")
     print("4. Delete Books")
-    print("5. Exit Program")
-    print("6. Goodtime :)")
+    print("5. Borrow Book")
+    print("6. Return Book")
+    print("7. Exit Program")
+    print("8. Goodtime :)")
 
     choice = input("Enter your choice (1-6): ")
 
@@ -141,11 +162,17 @@ def menu():
         updateBook()
     elif choice =="4":
         print("Delete Book")
-        deleteBook()
-    elif choice == "5":
+        deleteBook()        
+    elif choice=="5":
+        print("Borrow Book")
+        borrowBook()
+    elif choice=="6":
+        print("Return Book")
+        returnBook()    
+    elif choice == "7":
         print("Exiting the program.")
         return
-    elif choice=="6":
+    elif choice=="8":
         good2time()        
     else:
      print("Invalid choice. Please try again.")   
@@ -166,8 +193,8 @@ def back2menu():
         print("Byeee!!")
         return
     else:
-        print("Error!")
-
+        print("Masukan Kata yang benar")
+        back2menu()
 menu()
 
 
